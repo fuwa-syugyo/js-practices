@@ -1,10 +1,12 @@
+#!/usr/bin/env node
+
 for( let cnt = 1; cnt < 21; cnt++ ){
   if (cnt % 15 == 0)
-    print('FizzBuzz');
+    console.log('FizzBuzz');
   else if( cnt % 5 == 0)
-    print('Buzz');
+    console.log('Buzz');
   else if(cnt % 3 == 0)
-    print('Fizz');
+    console.log('Fizz');
   else
-    print(cnt);
+    console.log(cnt);
 }
