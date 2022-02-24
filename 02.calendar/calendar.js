@@ -13,6 +13,10 @@ const date = dayjs(firstDay)
 const endOfMonth = date.endOf('month').format('D')
 const spaceCount = date.startOf('month').format('d')
 
+function leftFillNum (num, targetLength) {
+  return num.toString().padStart(targetLength, ' ')
+}
+
 console.log('      ' + month + '月 ' + year + '     ')
 console.log('日 月 火 水 木 金 土')
 
@@ -21,10 +25,7 @@ for (let cnt = 0; cnt < spaceCount; cnt++) {
 }
 
 for (let cnt = 0; cnt < parseInt(endOfMonth); cnt++) {
-  if (cnt < 9) {
-    process.stdout.write(' ')
-  }
-  process.stdout.write(cnt + 1 + ' ')
+  process.stdout.write(leftFillNum(cnt + 1, 2) + ' ')
   const dayOfWeek = dayjs(firstDay).add(cnt, 'day').format('d')
   if (dayOfWeek === '0') {
     console.log('')
