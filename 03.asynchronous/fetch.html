@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>非同期処理</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      // HTMLの取得
+      // fetch('https://bootcamp.fjord.jp/')
+      //   .then(res => res.text())
+      //   .then(body => console.log(body))
+      
+      // function getHtml() {
+      //   // htmlを取得する
+
+      // }
+
+      // fetch().then(function(response) {
+      //   let objectURL = URL.createObjectURL(response)
+      // }) 
+
+      async function getData(url = '', data = {}) {
+        const response = await fetch(url, {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'content-type': 'text/html'
+          },
+          redirect: 'follow',
+          referrerPolicy: 'no-referrer'
+        })
+        return response.text()
+      }
+
+      getData('https://bootcamp.fjord.jp/').then(data => {
+        console.log(data)
+      })
+    </script>
+  </body>
+</html>
