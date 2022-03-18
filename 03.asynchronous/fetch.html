@@ -6,20 +6,6 @@
   </head>
   <body>
     <script type="text/javascript">
-      // HTMLの取得
-      // fetch('https://bootcamp.fjord.jp/')
-      //   .then(res => res.text())
-      //   .then(body => console.log(body))
-      
-      // function getHtml() {
-      //   // htmlを取得する
-
-      // }
-
-      // fetch().then(function(response) {
-      //   let objectURL = URL.createObjectURL(response)
-      // }) 
-
       async function getData(url = '', data = {}) {
         const response = await fetch(url, {
           method: 'GET',
