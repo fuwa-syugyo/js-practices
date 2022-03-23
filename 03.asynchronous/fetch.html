@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>非同期処理</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      async function getData(url = '') {
+        const response = await fetch(url, {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'content-type': 'text/html'
+          },
+          redirect: 'follow',
+          referrerPolicy: 'no-referrer'
+        })
+        return response.text()
+      }
+
+      getData('https://bootcamp.fjord.jp/').then(data => {
+        console.log(data)
+      })
+    </script>
+  </body>
+</html>
