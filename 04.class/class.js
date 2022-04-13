@@ -3,11 +3,10 @@
 const program = require('commander')
 
 program
-  .option('-l, --option [value]', 'Option value.')
-  .option('-r, --option [value]', 'Option value.')
-  .option('-d, --option [value]', 'Option value.')
+  .option('-l, --option [value]')
+  .option('-r, --option [value]')
+  .option('-d, --option [value]')
   .parse(process.argv)
-console.log(program.option)
 
 switch (process.argv[2]) {
   case '-l':
