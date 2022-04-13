@@ -23,6 +23,7 @@ switch (process.argv[2]) {
     const filePath = program.args[0]
     console.log(filePath)
     break
+}
 
 class Memo {
   constructor (title, description) {
@@ -42,10 +43,4 @@ class File {
 
   }
   
-}
-
-class GetInput {
- 
-  }
-
 }
