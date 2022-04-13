@@ -1,27 +1,29 @@
 #!/usr/bin/env node
 
-process.stdin.resume()
-process.stdin.setEncoding('utf8')
+const program = require('commander')
 
-let data = []
-let reader = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
-reader.on('line', (line) => {
-  data.push(line)
-  // data = line.split(' ').map((el) => parseInt(el));
-})
-reader.on('close', () => {
-  //console.log(data[0])
-  //console.log(data)
-  let get_rid_of_title = data.shift()
-  let memo = new Memo(data[0], get_rid_of_title)
-  console.log(memo.title)
-  console.log(memo.description)
-  reader.close()
-  process.exit()
-})
+program
+  .option('-l, --option [value]', 'Option value.')
+  .option('-r, --option [value]', 'Option value.')
+  .option('-d, --option [value]', 'Option value.')
+  .parse(process.argv)
+console.log(program.option)
+
+switch (process.argv[2]) {
+  case '-l':
+    console.log('lです')
+    break
+  case '-r':
+    console.log('rです')
+    break
+  case '-d':
+    console.log('dです')
+    break
+  default:
+    program.parse(process.argv)
+    const filePath = program.args[0]
+    console.log(filePath)
+    break
 
 class Memo {
   constructor (title, description) {
@@ -30,63 +32,21 @@ class Memo {
   }
 }
 
-// let get_rid_of_title = data.shift()
-// let memo = new Memo(data[0], get_rid_of_title)
-// console.log(memo.title, memo.description)
-// console.log('aaa')
+class File {
+  writeFile () {
 
+  }
+  readFile () {
 
+  }
+  deleteFile() {
 
-// class file {
-//   //書き込み
-//   const fs = require("fs").promises;
-
-//   const writer = async (file) =>{
-//     try{
-//       await fs.writeFile(file, "ここに標準入力");
-//     }
-//     catch(e){
-//       console.log(e.message);
-//     }
-//   };
-
-//   writer('memo.json');
-
-
-
-
-//   //読み込み
-//   const fs = require("fs");
-//   const readline = require("readline");
-
-//   const displayFile = async (file) => {
-//     const stream = fs.createReadStream(file);
-//     const rl = readline.createInterface({
-//       input: stream
-//     });
-
-//     let i = 1;
-//     for await (const line of rl) {
-//       // 行番号を作成
-//       let num = i.toString().padStart(5, "0");  //5文字未満は"0"で埋める
-//       i++;
-
-//       console.log(`${num}: ${line}`);
-//     }
-//   };
-
-//   displayFile('memo.json');
-// }
-
-// //ファイル選択
-// const { Select } = require('enquirer');
+  }
   
-// const prompt = new Select({
-//   name: 'title',
-//   message: 'Title',
-//   choices: ['apple', 'grape', 'watermelon', 'cherry', 'orange']
-// });
+}
 
-// prompt.run()
-//   .then(answer => console.log('Answer:', answer))
-//   .catch(console.error);
+class GetInput {
+ 
+  }
+
+}
