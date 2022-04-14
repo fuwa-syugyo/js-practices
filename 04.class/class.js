@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander')
+const { v4: uuidv4 } = require('uuid')
 
 program
   .option('-l, --option [value]')
@@ -13,22 +14,43 @@ switch (process.argv[2]) {
     console.log('lです')
     break
   case '-r':
-    console.log('rです')
+    console.log('表示するメモを選んでください')
     break
   case '-d':
-    console.log('dです')
+    console.log('削除するメモを選んでください')
     break
   default:
-    program.parse(process.argv)
-    const filePath = program.args[0]
-    console.log(filePath)
+    console.log('メモの内容を入力してください')
+
+    function inputData () {
+      const data = []
+      process.stdin.resume()
+      process.stdin.setEncoding('utf8')
+
+      const reader = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout
+      })
+      reader.on('line', (line) => {
+        data.push(line)
+      })
+      reader.on('close', () => {
+        memo = new Memo(uuidv4(), data[0], data)
+        console.log(memo)
+        reader.close()
+        process.exit()
+      })
+    }
+    inputData()
     break
 }
 
 class Memo {
-  constructor (title, description) {
+  constructor (id, title, description) {
+    this.id = id,
     this.title = title,
     this.description = description
+    description.shift()
   }
 }
 
@@ -36,11 +58,12 @@ class File {
   writeFile () {
 
   }
+
   readFile () {
 
   }
-  deleteFile() {
+
+  deleteFile () {
 
   }
-  
 }
