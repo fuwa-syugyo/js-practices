@@ -2,6 +2,9 @@
 
 const program = require('commander')
 const { v4: uuidv4 } = require('uuid')
+const fs = require('fs')
+// const { resolveObjectURL } = require('buffer')
+// const { consumers } = require('stream')
 
 program
   .option('-l, --option [value]')
@@ -21,7 +24,6 @@ switch (process.argv[2]) {
     break
   default:
     console.log('メモの内容を入力してください')
-
     function inputData () {
       const data = []
       process.stdin.resume()
@@ -35,8 +37,7 @@ switch (process.argv[2]) {
         data.push(line)
       })
       reader.on('close', () => {
-        memo = new Memo(uuidv4(), data[0], data)
-        console.log(memo)
+        File.writeFile(data)
         reader.close()
         process.exit()
       })
@@ -51,16 +52,40 @@ class Memo {
     this.title = title,
     this.description = description
     description.shift()
+    description.join('\n')
   }
 }
 
 class File {
-  writeFile () {
+  static writeFile (data) {
+    let memoArray = []
+    if (File.readFile() != null) {
+      memoArray = File.readFile()
+    }
+    const memo = new Memo(uuidv4(), data[0], data)
 
+    memoArray.push(memo)
+    fs.writeFile('memofile.json', JSON.stringify(memoArray), (err) => {
+      if (err) throw err
+      console.log('正常に書き込みが完了しました')
+    })
+    try {
+      fs.writeFileSync('memofile.json', JSON.stringify(memoArray))
+      memoArray.push(memo)
+    }
+    catch (e) {
+      console.log(e.message)
+    }
   }
 
-  readFile () {
-
+  static readFile () {
+    try {
+      const buff = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+      return buff
+    }
+    catch (e) {
+      console.log(e.message)
+    }
   }
 
   deleteFile () {
