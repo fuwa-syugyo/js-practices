@@ -3,7 +3,7 @@
 const program = require('commander')
 const { v4: uuidv4 } = require('uuid')
 const fs = require('fs')
-//const allMemofile = File.readFile()
+const { Select } = require('enquirer')
 // const { resolveObjectURL } = require('buffer')
 // const { consumers } = require('stream')
 
@@ -15,10 +15,10 @@ program
 
 switch (process.argv[2]) {
   case '-l':
-    displayAllMemoTitle()
+    console.log(AllMemoTitle())
     break
   case '-r':
-    console.log('表示するメモを選んでください')
+    selectMemo()
     break
   case '-d':
     console.log('削除するメモを選んでください')
@@ -48,10 +48,23 @@ function inputData () {
   })
 }
 
-function displayAllMemoTitle () {
+function AllMemoTitle () {
   const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
   const memoTitleArray = memo.map((e) => e.title)
-  console.log(memoTitleArray.join('\n'))
+  return memoTitleArray
+}
+
+function selectMemo () {
+  const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+  const prompt = new Select({
+    name: 'title',
+    message: '参照するメモを選んでください',
+    choices: AllMemoTitle()
+  });
+  
+  prompt.run()
+    .then(answer => console.log('Answer:', answer))
+    .catch(console.error);
 }
 
 class Memo {
