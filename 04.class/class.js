@@ -3,6 +3,7 @@
 const program = require('commander')
 const { v4: uuidv4 } = require('uuid')
 const fs = require('fs')
+//const allMemofile = File.readFile()
 // const { resolveObjectURL } = require('buffer')
 // const { consumers } = require('stream')
 
@@ -14,7 +15,7 @@ program
 
 switch (process.argv[2]) {
   case '-l':
-    console.log('lです')
+    displayAllMemoTitle()
     break
   case '-r':
     console.log('表示するメモを選んでください')
@@ -24,26 +25,33 @@ switch (process.argv[2]) {
     break
   default:
     console.log('メモの内容を入力してください')
-    function inputData () {
-      const data = []
-      process.stdin.resume()
-      process.stdin.setEncoding('utf8')
-
-      const reader = require('readline').createInterface({
-        input: process.stdin,
-        output: process.stdout
-      })
-      reader.on('line', (line) => {
-        data.push(line)
-      })
-      reader.on('close', () => {
-        File.writeFile(data)
-        reader.close()
-        process.exit()
-      })
-    }
     inputData()
     break
+}
+
+function inputData () {
+  const data = []
+  process.stdin.resume()
+  process.stdin.setEncoding('utf8')
+
+  const reader = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+  reader.on('line', (line) => {
+    data.push(line)
+  })
+  reader.on('close', () => {
+    File.writeFile(data)
+    reader.close()
+    process.exit()
+  })
+}
+
+function displayAllMemoTitle () {
+  const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+  const memoTitleArray = memo.map((e) => e.title)
+  console.log(memoTitleArray.join('\n'))
 }
 
 class Memo {
@@ -52,7 +60,6 @@ class Memo {
     this.title = title,
     this.description = description
     description.shift()
-    description.join('\n')
   }
 }
 
