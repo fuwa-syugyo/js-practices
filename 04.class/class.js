@@ -60,11 +60,13 @@ function selectMemo () {
     name: 'title',
     message: '参照するメモを選んでください',
     choices: AllMemoTitle()
-  });
+  })
   
   prompt.run()
-    .then(answer => console.log('Answer:', answer))
-    .catch(console.error);
+    .then(answer => 
+      //const memoAnswer =  memo.find((value) => value.title === answer))
+      console.log(memo.find((value) => value.title === answer).description.toString()))
+    .catch(console.error)
 }
 
 class Memo {
@@ -87,11 +89,11 @@ class File {
     memoArray.push(memo)
     fs.writeFile('memofile.json', JSON.stringify(memoArray), (err) => {
       if (err) throw err
-      console.log('正常に書き込みが完了しました')
     })
     try {
       fs.writeFileSync('memofile.json', JSON.stringify(memoArray))
       memoArray.push(memo)
+      console.log('正常に書き込みが完了しました')
     }
     catch (e) {
       console.log(e.message)
