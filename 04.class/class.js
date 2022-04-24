@@ -18,10 +18,12 @@ switch (process.argv[2]) {
     console.log(AllMemoTitle())
     break
   case '-r':
-    selectMemo()
+    console.log('参照するメモを選んでください')
+    displayMemo()
     break
   case '-d':
     console.log('削除するメモを選んでください')
+    deleteMemo()
     break
   default:
     console.log('メモの内容を入力してください')
@@ -55,17 +57,24 @@ function AllMemoTitle () {
 }
 
 function selectMemo () {
-  const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
-  console.log(memo)
   const prompt = new Select({
-    name: 'title',
-    message: '参照するメモを選んでください',
     choices: AllMemoTitle()
   })
-  
-  prompt.run()
-    .then(answer => 
-      //const memoAnswer =  memo.find((value) => value.title === answer))
+  return prompt
+}
+
+function displayMemo () {
+  const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+  selectMemo().run()
+    .then(answer =>
+      console.log(memo.find((value) => value.title === answer).description.join('\n')))
+    .catch(console.error)
+}
+
+function deleteMemo () {
+  const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+  selectMemo().run()
+    .then(answer =>
       console.log(memo.find((value) => value.title === answer).description.join('\n')))
     .catch(console.error)
 }
