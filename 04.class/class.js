@@ -56,6 +56,7 @@ function AllMemoTitle () {
 
 function selectMemo () {
   const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+  console.log(memo)
   const prompt = new Select({
     name: 'title',
     message: '参照するメモを選んでください',
@@ -65,7 +66,7 @@ function selectMemo () {
   prompt.run()
     .then(answer => 
       //const memoAnswer =  memo.find((value) => value.title === answer))
-      console.log(memo.find((value) => value.title === answer).description.toString()))
+      console.log(memo.find((value) => value.title === answer).description.join('\n')))
     .catch(console.error)
 }
 
