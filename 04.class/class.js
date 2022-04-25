@@ -7,8 +7,8 @@ const { Select } = require('enquirer')
 
 class Memo {
   constructor (id, title, description) {
-    this.id = id,
-    this.title = title,
+    this.id = id
+    this.title = title
     this.description = description
     description.shift()
   }
@@ -57,8 +57,7 @@ class File {
       fs.writeFileSync('memofile.json', JSON.stringify(memoArray))
       memoArray.push(memo)
       console.log('正常に書き込みが完了しました')
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e.message)
     }
   }
@@ -76,8 +75,7 @@ class File {
       const deleteMemoProperty = memoArray.find((value) => value.title === answer)
       memoArray = memoArray.filter((item) => item.id !== deleteMemoProperty.id)
       fs.writeFileSync('memofile.json', JSON.stringify(memoArray))
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e.message)
     }
   }
