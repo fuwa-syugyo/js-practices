@@ -4,8 +4,6 @@ const program = require('commander')
 const { v4: uuidv4 } = require('uuid')
 const fs = require('fs')
 const { Select } = require('enquirer')
-// const { resolveObjectURL } = require('buffer')
-// const { consumers } = require('stream')
 
 program
   .option('-l, --option [value]')
@@ -15,7 +13,7 @@ program
 
 switch (process.argv[2]) {
   case '-l':
-    console.log(AllMemoTitle())
+    console.log(AllMemoTitle().join('\n'))
     break
   case '-r':
     console.log('参照するメモを選んでください')
@@ -72,10 +70,8 @@ function displayMemo () {
 }
 
 function deleteMemo () {
-  const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
   selectMemo().run()
-    .then(answer =>
-      console.log(memo.find((value) => value.title === answer).description.join('\n')))
+    .then(answer => File.deleteFile(answer))
     .catch(console.error)
 }
 
@@ -91,7 +87,7 @@ class Memo {
 class File {
   static writeFile (data) {
     let memoArray = []
-    if (memoArray != null && new File('memofile.json').exists) {
+    if (memoArray != null && fs.existsSync('memofile.json')) {
       memoArray = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
     }
     const memo = new Memo(uuidv4(), data[0], data)
@@ -110,7 +106,22 @@ class File {
     }
   }
 
-  deleteFile () {
+  static deleteFile (answer) {
+    let memoArray = []
+    if (memoArray != null && fs.existsSync('memofile.json')) {
+      memoArray = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+    }
 
+    fs.writeFileSync('memofile.json', JSON.stringify(memoArray), (err) => {
+      if (err) throw err
+    })
+    try {
+      const deleteMemoProperty = memoArray.find((value) => value.title === answer)
+      memoArray = memoArray.filter((item) => item.id !== deleteMemoProperty.id)
+      fs.writeFileSync('memofile.json', JSON.stringify(memoArray))
+    }
+    catch (e) {
+      console.log(e.message)
+    }
   }
 }
