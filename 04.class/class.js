@@ -5,82 +5,39 @@ const { v4: uuidv4 } = require('uuid')
 const fs = require('fs')
 const { Select } = require('enquirer')
 
-program
-  .option('-l, --option [value]')
-  .option('-r, --option [value]')
-  .option('-d, --option [value]')
-  .parse(process.argv)
-
-switch (process.argv[2]) {
-  case '-l':
-    console.log(AllMemoTitle().join('\n'))
-    break
-  case '-r':
-    console.log('参照するメモを選んでください')
-    displayMemo()
-    break
-  case '-d':
-    console.log('削除するメモを選んでください')
-    deleteMemo()
-    break
-  default:
-    console.log('メモの内容を入力してください')
-    inputData()
-    break
-}
-
-function inputData () {
-  const data = []
-  process.stdin.resume()
-  process.stdin.setEncoding('utf8')
-
-  const reader = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
-  })
-  reader.on('line', (line) => {
-    data.push(line)
-  })
-  reader.on('close', () => {
-    File.writeFile(data)
-    reader.close()
-    process.exit()
-  })
-}
-
-function AllMemoTitle () {
-  const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
-  const memoTitleArray = memo.map((e) => e.title)
-  return memoTitleArray
-}
-
-function selectMemo () {
-  const prompt = new Select({
-    choices: AllMemoTitle()
-  })
-  return prompt
-}
-
-function displayMemo () {
-  const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
-  selectMemo().run()
-    .then(answer =>
-      console.log(memo.find((value) => value.title === answer).description.join('\n')))
-    .catch(console.error)
-}
-
-function deleteMemo () {
-  selectMemo().run()
-    .then(answer => File.deleteFile(answer))
-    .catch(console.error)
-}
-
 class Memo {
   constructor (id, title, description) {
     this.id = id,
     this.title = title,
     this.description = description
     description.shift()
+  }
+
+  static AllMemoTitle () {
+    const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+    const memoTitleArray = memo.map((e) => e.title)
+    return memoTitleArray
+  }
+
+  static selectMemo () {
+    const prompt = new Select({
+      choices: Memo.AllMemoTitle()
+    })
+    return prompt
+  }
+
+  static displayMemo () {
+    const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+    Memo.selectMemo().run()
+      .then(answer =>
+        console.log(memo.find((value) => value.title === answer).description.join('\n')))
+      .catch(console.error)
+  }
+
+  static deleteMemo () {
+    Memo.selectMemo().run()
+      .then(answer => File.deleteFile(answer))
+      .catch(console.error)
   }
 }
 
@@ -124,4 +81,47 @@ class File {
       console.log(e.message)
     }
   }
+}
+
+program
+  .option('-l, --option [value]')
+  .option('-r, --option [value]')
+  .option('-d, --option [value]')
+  .parse(process.argv)
+
+switch (process.argv[2]) {
+  case '-l':
+    console.log(Memo.AllMemoTitle().join('\n'))
+    break
+  case '-r':
+    console.log('参照するメモを選んでください')
+    Memo.displayMemo()
+    break
+  case '-d':
+    console.log('削除するメモを選んでください')
+    Memo.deleteMemo()
+    break
+  default:
+    console.log('メモの内容を入力してください')
+    inputData()
+    break
+}
+
+function inputData () {
+  const data = []
+  process.stdin.resume()
+  process.stdin.setEncoding('utf8')
+
+  const reader = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+  reader.on('line', (line) => {
+    data.push(line)
+  })
+  reader.on('close', () => {
+    File.writeFile(data)
+    reader.close()
+    process.exit()
+  })
 }
