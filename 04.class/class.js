@@ -91,7 +91,7 @@ class Memo {
 class File {
   static writeFile (data) {
     let memoArray = []
-    if (File.readFile() != null) {
+    if (memoArray != null && new File('memofile.json').exists) {
       memoArray = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
     }
     const memo = new Memo(uuidv4(), data[0], data)
