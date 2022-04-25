@@ -92,7 +92,7 @@ class File {
   static writeFile (data) {
     let memoArray = []
     if (File.readFile() != null) {
-      memoArray = File.readFile()
+      memoArray = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
     }
     const memo = new Memo(uuidv4(), data[0], data)
 
@@ -104,16 +104,6 @@ class File {
       fs.writeFileSync('memofile.json', JSON.stringify(memoArray))
       memoArray.push(memo)
       console.log('正常に書き込みが完了しました')
-    }
-    catch (e) {
-      console.log(e.message)
-    }
-  }
-
-  static readFile () {
-    try {
-      const buff = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
-      return buff
     }
     catch (e) {
       console.log(e.message)
