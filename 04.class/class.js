@@ -13,7 +13,7 @@ class Memo {
     description.shift()
   }
 
-  static AllMemoTitle () {
+  static allMemoTitle () {
     const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
     const memoTitleArray = memo.map((e) => e.title)
     return memoTitleArray
