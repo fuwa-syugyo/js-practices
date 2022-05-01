@@ -21,7 +21,7 @@ class Memo {
 
   static selectMemo () {
     const prompt = new Select({
-      choices: Memo.AllMemoTitle()
+      choices: Memo.allMemoTitle()
     })
     return prompt
   }
@@ -36,7 +36,7 @@ class Memo {
 
   static deleteMemo () {
     Memo.selectMemo().run()
-      .then(answer => File.deleteFile(answer))
+      .then(answer => File.deleteMemoFromFile(answer))
       .catch(console.error)
   }
 }
@@ -62,7 +62,7 @@ class File {
     }
   }
 
-  static deleteFile (answer) {
+  static deleteMemoFromFile (answer) {
     let memoArray = []
     if (memoArray != null && fs.existsSync('memofile.json')) {
       memoArray = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
@@ -89,7 +89,7 @@ program
 
 switch (process.argv[2]) {
   case '-l':
-    console.log(Memo.AllMemoTitle().join('\n'))
+    console.log(Memo.allMemoTitle().join('\n'))
     break
   case '-r':
     console.log('参照するメモを選んでください')
