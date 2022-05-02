@@ -26,18 +26,41 @@ class Memo {
     return prompt
   }
 
+  // static displayMemo () {
+  //   const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+  //   Memo.selectMemo().run()
+  //     .then(answer =>
+  //       console.log(memo.find((value) => value.title === answer).description.join('\n')))
+  //     .catch(console.error)
+  // }
+
+  // static deleteMemo () {
+  //   Memo.selectMemo().run()
+  //     .then(answer => File.deleteMemoFromFile(answer))
+  //     .catch(console.error)
+  // }
+
   static displayMemo () {
-    const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
-    Memo.selectMemo().run()
-      .then(answer =>
-        console.log(memo.find((value) => value.title === answer).description.join('\n')))
-      .catch(console.error)
+    (async () => {
+      try {
+        const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+        const answer = await Memo.selectMemo().run()
+        console.log(memo.find((value) => value.title === answer).description.join('\n'))
+      } catch (e) {
+        console.error(e)
+      }
+    })()
   }
 
   static deleteMemo () {
-    Memo.selectMemo().run()
-      .then(answer => File.deleteMemoFromFile(answer))
-      .catch(console.error)
+    (async () => {
+      try {
+        const answer = await Memo.selectMemo().run()
+        File.deleteMemoFromFile(answer)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
   }
 }
 
