@@ -26,20 +26,6 @@ class Memo {
     return prompt
   }
 
-  // static displayMemo () {
-  //   const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
-  //   Memo.selectMemo().run()
-  //     .then(answer =>
-  //       console.log(memo.find((value) => value.title === answer).description.join('\n')))
-  //     .catch(console.error)
-  // }
-
-  // static deleteMemo () {
-  //   Memo.selectMemo().run()
-  //     .then(answer => File.deleteMemoFromFile(answer))
-  //     .catch(console.error)
-  // }
-
   static displayMemo () {
     (async () => {
       try {
