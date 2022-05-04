@@ -26,27 +26,23 @@ class Memo {
     return prompt
   }
 
-  static displayMemo () {
-    (async () => {
-      try {
-        const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
-        const answer = await Memo.selectMemo().run()
-        console.log(memo.find((value) => value.title === answer).description.join('\n'))
-      } catch (e) {
-        console.error(e)
-      }
-    })()
+  static async displayMemo () {
+    try {
+      const memo = JSON.parse(fs.readFileSync('memofile.json', 'utf-8'))
+      const answer = await Memo.selectMemo().run()
+      console.log(memo.find((value) => value.title === answer).description.join('\n'))
+    } catch (e) {
+      console.error(e)
+    }
   }
 
-  static deleteMemo () {
-    (async () => {
-      try {
-        const answer = await Memo.selectMemo().run()
-        File.deleteMemoFromFile(answer)
-      } catch (e) {
-        console.error(e)
-      }
-    })()
+  static async deleteMemo () {
+    try {
+      const answer = await Memo.selectMemo().run()
+      File.deleteMemoFromFile(answer)
+    } catch (e) {
+      console.error(e)
+    }
   }
 }
 
